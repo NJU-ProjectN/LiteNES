@@ -20,8 +20,14 @@ litenes来自开源项目mynes
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 
 static char rom[1048576];
+
+void do_exit() // normal exit at SIGINT
+{
+	exit(0);
+}
 
 int main(int argc, char *argv[])
 {
@@ -39,6 +45,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Invalid or unsupported rom.\n");
         exit(1);
     }
+	signal(SIGINT, do_exit);
     fce_init();
     fce_run();
     return 0;
