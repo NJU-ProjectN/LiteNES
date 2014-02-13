@@ -3,7 +3,7 @@
 This project is a fork of Stanislav Yaglo's mynes (https://github.com/yaglo/mynes).
 We mainly refactored the project for brevity and portabilty,
 by removing unused comments and changing the file structure.
-LiteNES runs classical roms (e.g., Battle City, Yie-Ar Kung Fu and Super Mario),
+LiteNES runs classical roms (e.g., Battle City, Yie Ar Kung-Fu and Super Mario),
 but has only partial support of NES roms, and does not support the emulation of APU.
 
 The key feature of LiteNES is its *portability*:
@@ -11,6 +11,7 @@ the system-call-dependent code is reduced to minimal
 (only appears in `hal.c` and `main.c`).
 All other sources *do not contain any direct or indirect calls to the operating system kernel*.
 Also, the only calls to standard C library are memory movements (e.g., `memcpy` and `memcmp`).
+To port LiteNES to other systems, only slight modification of `main.c` and re-implementation of `hal.c` is required.
 
 ### Compilation
 To compile LiteNES, you must have *allegro5* library.
