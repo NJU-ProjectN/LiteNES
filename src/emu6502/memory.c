@@ -17,7 +17,7 @@ byte memory_readb(word address)
 void memory_writeb(word address, byte data)
 {
     // DMA transfer
-	int i;
+    int i;
     if (address == 0x4014) {
         for (i = 0; i < 256; i++) {
             ppu_sprram_write(cpu_ram_read((0x100 * data) + i));

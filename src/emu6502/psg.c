@@ -9,7 +9,7 @@ inline byte psg_io_read(word address)
     // Joystick 1
     if (address == 0x4016) {
         if (p++ < 9) {
-			return nes_key_state(p);
+            return nes_key_state(p);
         }
     }
     return 0;

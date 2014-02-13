@@ -23,22 +23,23 @@ litenes来自开源项目mynes
 
 static char rom[1048576];
 
-int main(int argc, char *argv[]) {
-	if (argc != 2) {
-		fprintf(stderr, "Usage: mynes romfile.nes\n");
-		exit(1);
-	}
-	FILE *fp = fopen(argv[1], "r");
-	if (fp == NULL) {
-		fprintf(stderr, "Open rom file failed.\n");
-		exit(1);
-	}
-	fread(rom, sizeof(rom), 1, fp);
+int main(int argc, char *argv[])
+{
+    if (argc != 2) {
+        fprintf(stderr, "Usage: mynes romfile.nes\n");
+        exit(1);
+    }
+    FILE *fp = fopen(argv[1], "r");
+    if (fp == NULL) {
+        fprintf(stderr, "Open rom file failed.\n");
+        exit(1);
+    }
+    fread(rom, sizeof(rom), 1, fp);
     if (fce_load_rom(rom) != 0) {
-		fprintf(stderr, "Invalid or unsupported rom.\n");
-		exit(1);
-	}
+        fprintf(stderr, "Invalid or unsupported rom.\n");
+        exit(1);
+    }
     fce_init();
     fce_run();
-	return 0;
+    return 0;
 }

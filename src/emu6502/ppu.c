@@ -130,7 +130,7 @@ inline void ppu_ram_write(word address, byte data)
 
 void ppu_draw_background_scanline(bool mirror)
 {
-	int tile_x;
+    int tile_x;
     for (tile_x = ppu_shows_background_in_leftmost_8px() ? 0 : 1; tile_x < 32; tile_x++) {
         // Skipping off-screen pixels
         if (((tile_x << 3) - ppu.PPUSCROLL_X + (mirror ? 256 : 0)) > 256)
@@ -144,7 +144,7 @@ void ppu_draw_background_scanline(bool mirror)
         byte l = ppu_ram_read(tile_address + y_in_tile);
         byte h = ppu_ram_read(tile_address + y_in_tile + 8);
 
-		int x;
+        int x;
         for (x = 0; x < 8; x++) {
             byte color = ppu_l_h_addition_table[l][h][x];
 
@@ -166,12 +166,12 @@ void ppu_draw_background_scanline(bool mirror)
                 palette_attribute &= 3;
 
                 word palette_address = 0x3F00 + (palette_attribute << 2);
-				int idx = ppu_ram_read(palette_address + color);
+                int idx = ppu_ram_read(palette_address + color);
                 pal c = palette[idx];
 
                 ppu_screen_background[(tile_x << 3) + x][ppu.scanline] = color;
-				
-				pixbuf_add(bg, (tile_x << 3) + x - ppu.PPUSCROLL_X + (mirror ? 256 : 0), ppu.scanline + 1, c.r, c.g, c.b, idx);
+                
+                pixbuf_add(bg, (tile_x << 3) + x - ppu.PPUSCROLL_X + (mirror ? 256 : 0), ppu.scanline + 1, c.r, c.g, c.b, idx);
             }
         }
     }
@@ -180,7 +180,7 @@ void ppu_draw_background_scanline(bool mirror)
 void ppu_draw_sprite_scanline()
 {
     int scanline_sprite_count = 0;
-	int n;
+    int n;
     for (n = 0; n < 0x100; n += 4) {
         byte sprite_x = PPU_SPRRAM[n + 3];
         byte sprite_y = PPU_SPRRAM[n];
@@ -207,21 +207,21 @@ void ppu_draw_sprite_scanline()
 
         byte palette_attribute = PPU_SPRRAM[n + 2] & 0x3;
         word palette_address = 0x3F10 + (palette_attribute << 2);
-		int x;
+        int x;
         for (x = 0; x < 8; x++) {
             int color = hflip ? ppu_l_h_addition_flip_table[l][h][x] : ppu_l_h_addition_table[l][h][x];
 
             // Color 0 is transparent
             if (color != 0) {
                 int screen_x = sprite_x + x;
-				int idx = ppu_ram_read(palette_address + color);
+                int idx = ppu_ram_read(palette_address + color);
                 pal c = palette[idx];
                 
                 if (PPU_SPRRAM[n + 2] & 0x20) {
-					pixbuf_add(bbg, screen_x, sprite_y + y_in_tile + 1, c.r, c.g, c.b, idx);
+                    pixbuf_add(bbg, screen_x, sprite_y + y_in_tile + 1, c.r, c.g, c.b, idx);
                 }
                 else {
-					pixbuf_add(fg, screen_x, sprite_y + y_in_tile + 1, c.r, c.g, c.b, idx);
+                    pixbuf_add(fg, screen_x, sprite_y + y_in_tile + 1, c.r, c.g, c.b, idx);
                 }
 
                 // Checking sprite 0 hit
@@ -375,7 +375,7 @@ void ppu_init()
     ppu_2007_first_read = true;
 
     // Initializing low-high byte-pairs for pattern tables
-	int h, l, x;
+    int h, l, x;
     for (h = 0; h < 0x100; h++) {
         for (l = 0; l < 0x100; l++) {
             for (x = 0; x < 8; x++) {
@@ -394,7 +394,7 @@ void ppu_sprram_write(byte data)
 void ppu_set_background_color(byte color)
 {
     pal c = palette[color];
-	nes_set_bg_color(c.r, c.g, c.b, color);
+    nes_set_bg_color(c.r, c.g, c.b, color);
 }
 
 void ppu_set_mirroring(byte mirroring)
