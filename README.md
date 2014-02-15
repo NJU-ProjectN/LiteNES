@@ -16,7 +16,10 @@ To port LiteNES to other systems, only slight modification of `main.c` and re-im
 ### Compilation
 To compile LiteNES, you must have *allegro5* library.
 Usually you can install it in the official software repository
-(by `apt-get`, `yum`, `pacman` or `emerge`, depending on your Linux distribution).
+(by `apt-get`, `yum`, `pacman` or `emerge`, depending on your Linux
+distribution).
+For Ubuntu users, if you cannot find allegro5 in your sources, please find 
+`liballegro5.0` and `liballegro5-dev` deb package and install them.
 
 Type `make` in the command line to compile. Resolve any error message until
 the `litenes` binary file is created.
@@ -30,3 +33,4 @@ Key bindings: UP - `W`, DOWN - `S`, LEFT - `A`, RIGHT - `D`, SELECT - `U`,
 START - `I`, A - `K` and B - `J`. Only one player is supported.
 
 ![LiteNES running Yie-Ar Kung Fu](https://raw.github.com/NJUOS/litenes/master/kungfu.png)
+

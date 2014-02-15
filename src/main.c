@@ -40,7 +40,11 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Open rom file failed.\n");
         exit(1);
     }
-    fread(rom, sizeof(rom), 1, fp);
+    int nread = fread(rom, sizeof(rom), 1, fp);
+    if (nread == 0 && ferror(fp)) {
+        fprintf(stderr, "Read rom file failed.\n");
+        exit(1);
+    }
     if (fce_load_rom(rom) != 0) {
         fprintf(stderr, "Invalid or unsupported rom.\n");
         exit(1);

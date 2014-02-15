@@ -6,7 +6,7 @@ CFILES = $(shell find src/ -name "*.c")
 OBJS = $(CFILES:.c=.o)
 
 litenes: $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) -o litenes
+	$(CC) $(OBJS) $(LDFLAGS) -o litenes
 
 -include $(patsubst %.o, %.d, $(OBJS))
 
