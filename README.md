@@ -31,6 +31,7 @@ Then in this directory, type `./litenes rom.nes` to start the emulator.
 
 Key bindings: UP - `W`, DOWN - `S`, LEFT - `A`, RIGHT - `D`, SELECT - `U`,
 START - `I`, A - `K` and B - `J`. Only one player is supported.
+Type `CTRL C` in terminal to exit.
 
 ![LiteNES running Yie-Ar Kung Fu](https://raw.github.com/NJUOS/litenes/master/kungfu.png)
 
