@@ -6,6 +6,8 @@
 #include "nes/nes.h"
 #include <string.h>
 
+PixelBuf bg, bbg, fg;
+
 typedef struct {
     char signature[4];
     byte prg_block_count;
@@ -127,3 +129,4 @@ void fce_update_screen()
     pixbuf_clean(bg);
     pixbuf_clean(fg);
 }
+
