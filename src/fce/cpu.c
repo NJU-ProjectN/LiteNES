@@ -1,7 +1,7 @@
-#include "nes/cpu.h"
-#include "nes/cpu-internal.h"
-#include "nes/memory.h"
-#include "nes/ppu.h"
+#include "cpu.h"
+#include "cpu-internal.h"
+#include "memory.h"
+#include "ppu.h"
 
 
 // CPU Memory

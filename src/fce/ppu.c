@@ -1,9 +1,9 @@
-#include "nes/ppu.h"
-#include "nes/ppu-internal.h"
-#include "nes/cpu.h"
-#include "nes/fce.h"
-#include "nes/memory.h"
-#include "nes/hal.h"
+#include "ppu.h"
+#include "ppu-internal.h"
+#include "cpu.h"
+#include "fce.h"
+#include "memory.h"
+#include "hal.h"
 #include <string.h>
 
 byte ppu_sprite_palette[4][4];
@@ -167,11 +167,10 @@ void ppu_draw_background_scanline(bool mirror)
 
                 word palette_address = 0x3F00 + (palette_attribute << 2);
                 int idx = ppu_ram_read(palette_address + color);
-                pal c = palette[idx];
 
                 ppu_screen_background[(tile_x << 3) + x][ppu.scanline] = color;
                 
-                pixbuf_add(bg, (tile_x << 3) + x - ppu.PPUSCROLL_X + (mirror ? 256 : 0), ppu.scanline + 1, c.r, c.g, c.b, idx);
+                pixbuf_add(bg, (tile_x << 3) + x - ppu.PPUSCROLL_X + (mirror ? 256 : 0), ppu.scanline + 1, idx);
             }
         }
     }
@@ -215,13 +214,12 @@ void ppu_draw_sprite_scanline()
             if (color != 0) {
                 int screen_x = sprite_x + x;
                 int idx = ppu_ram_read(palette_address + color);
-                pal c = palette[idx];
                 
                 if (PPU_SPRRAM[n + 2] & 0x20) {
-                    pixbuf_add(bbg, screen_x, sprite_y + y_in_tile + 1, c.r, c.g, c.b, idx);
+                    pixbuf_add(bbg, screen_x, sprite_y + y_in_tile + 1, idx);
                 }
                 else {
-                    pixbuf_add(fg, screen_x, sprite_y + y_in_tile + 1, c.r, c.g, c.b, idx);
+                    pixbuf_add(fg, screen_x, sprite_y + y_in_tile + 1, idx);
                 }
 
                 // Checking sprite 0 hit
@@ -393,8 +391,7 @@ void ppu_sprram_write(byte data)
 
 void ppu_set_background_color(byte color)
 {
-    pal c = palette[color];
-    nes_set_bg_color(c.r, c.g, c.b, color);
+    nes_set_bg_color(color);
 }
 
 void ppu_set_mirroring(byte mirroring)

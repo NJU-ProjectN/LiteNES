@@ -1,5 +1,5 @@
-#include "nes/mmc.h"
-#include "nes/ppu.h"
+#include "mmc.h"
+#include "ppu.h"
 #include <string.h>
 
 #define MMC_MAX_PAGE_COUNT 256

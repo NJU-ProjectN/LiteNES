@@ -15,7 +15,7 @@ How does the emulator work?
   6) when SIGINT signal is received, it kills itself
 */
 
-#include "nes/fce.h"
+#include "fce.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <signal.h>

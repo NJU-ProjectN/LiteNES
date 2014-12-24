@@ -1,6 +1,6 @@
-#include "nes/cpu.h"
-#include "nes/cpu-internal.h"
-#include "nes/memory.h"
+#include "cpu.h"
+#include "cpu-internal.h"
+#include "memory.h"
 
 // CPU Addressing Modes
 

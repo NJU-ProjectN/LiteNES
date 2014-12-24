@@ -1,9 +1,9 @@
-#include "nes/fce.h"
-#include "nes/cpu.h"
-#include "nes/memory.h"
-#include "nes/ppu.h"
-#include "nes/hal.h"
-#include "nes/nes.h"
+#include "fce.h"
+#include "cpu.h"
+#include "memory.h"
+#include "ppu.h"
+#include "hal.h"
+#include "nes.h"
 #include <string.h>
 
 PixelBuf bg, bbg, fg;
@@ -100,28 +100,17 @@ void fce_run()
 
 void fce_update_screen()
 {
-    int i;
     int idx = ppu_ram_read(0x3F00);
-    pal bgc = palette[idx];
-    nes_set_bg_color(bgc.r, bgc.g, bgc.b, idx);
+    nes_set_bg_color(idx);
     
-    if (ppu_shows_sprites()) {
-        for (i = 0; i < bbg.size; i ++) {
-            nes_draw_pixel(bbg.buf + i);
-        }
-    }
-    
-    if (ppu_shows_background()) {
-        for (i = 0; i < bg.size; i ++) {
-            nes_draw_pixel(bg.buf + i);
-        }
-    }
-    
-    if (ppu_shows_sprites()) {
-        for (i = 0; i < fg.size; i ++) {
-            nes_draw_pixel(fg.buf + i);
-        }
-    }
+    if (ppu_shows_sprites())
+        nes_flush_buf(&bbg);
+
+    if (ppu_shows_background())
+        nes_flush_buf(&bg);
+
+    if (ppu_shows_sprites())
+        nes_flush_buf(&fg);
 
     nes_flip_display();
 

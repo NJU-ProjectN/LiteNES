@@ -1,5 +1,5 @@
-#include "nes/psg.h"
-#include "nes/hal.h"
+#include "psg.h"
+#include "hal.h"
 
 static byte prev_write;
 static int p = 10;

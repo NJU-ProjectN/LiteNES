@@ -1,4 +1,4 @@
-#include "nes/common.h"
+#include "common.h"
 
 bool common_bit_set(long long value, byte position) { return value & (1L << position); }
 

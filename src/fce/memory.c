@@ -1,7 +1,7 @@
-#include "nes/memory.h"
-#include "nes/cpu.h"
-#include "nes/ppu.h"
-#include "nes/psg.h"
+#include "memory.h"
+#include "cpu.h"
+#include "ppu.h"
+#include "psg.h"
 
 byte memory_readb(word address)
 {

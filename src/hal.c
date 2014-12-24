@@ -6,17 +6,15 @@ To port this project, replace the following functions by your own:
 1) nes_hal_init()
     Do essential initialization work, including starting a FPS HZ timer.
 
-2) nes_set_bg_color(r, g, b, c)
-    Set the back ground color to be (r, g, b),
-    (r, g, b) is equivalent to the NES internal color code c.
+2) nes_set_bg_color(c)
+    Set the back ground color to be the NES internal color code c.
 
-3) nes_draw_pixel(*p)
-    Put a pixel p into the current pixel buffer.
+3) nes_flush_buf(*buf)
+    Flush the entire pixel buf's data to frame buffer.
 
 4) nes_flip_display()
     Fill the screen with previously set background color, and
-    display all contents in the pixel buffer to the screen, then
-    flush the pixel buffer.
+    display all contents in the frame buffer.
 
 5) wait_for_frame()
     Implement it to make the following code is executed FPS times a second:
@@ -38,15 +36,16 @@ To port this project, replace the following functions by your own:
       7 - LEFT
       8 - RIGHT
 */
-#include "nes/hal.h"
-#include "nes/fce.h"
-#include "nes/common.h"
+#include "hal.h"
+#include "fce.h"
+#include "common.h"
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 
 ALLEGRO_EVENT_QUEUE *fce_event_queue;
 ALLEGRO_TIMER *fce_timer = NULL;
 static ALLEGRO_VERTEX vtx[1000000];
+ALLEGRO_COLOR color_map[64];
 int vtx_sz = 0;
   
 /* Wait until next allegro timer event is fired. */
@@ -58,26 +57,31 @@ void wait_for_frame()
         al_wait_for_event(fce_event_queue, &event);
         if (event.type == ALLEGRO_EVENT_TIMER) break;
     }
-    asm volatile ("nop");
 }
 
-/* Set background color to be (r, g, b).
-   (r, g, b)'s corresponding palette code in NES is c. */
-void nes_set_bg_color(int r, int g, int b, int c)
+/* Set background color. RGB value of c is defined in fce.h */
+void nes_set_bg_color(int c)
 {
-    al_clear_to_color(al_map_rgb(r, g, b));
+    al_clear_to_color(color_map[c]);
 }
 
-/* Draw a pixel in the pixel buffer denoted by a list of ALLEGRO_VERTEXs.
-   Pixels are stored in the buffer for later display (at flip_display). */
-void nes_draw_pixel(Pixel *p)
-{
-    ALLEGRO_VERTEX px;
-    px.x = p->x;
-    px.y = p->y;
-    px.z = 0;
-    px.color = al_map_rgb(p->r, p->g, p->b);
-    memcpy(&vtx[vtx_sz++], &px, sizeof(ALLEGRO_VERTEX));
+/* Flush the pixel buffer */
+void nes_flush_buf(PixelBuf *buf) {
+    int i;
+    for (i = 0; i < buf->size; i ++) {
+        Pixel *p = &buf->buf[i];
+        int x = p->x, y = p->y;
+        ALLEGRO_COLOR c = color_map[p->c];
+
+        vtx[vtx_sz].x = x*2; vtx[vtx_sz].y = y*2;
+        vtx[vtx_sz ++].color = c;
+        vtx[vtx_sz].x = x*2+1; vtx[vtx_sz].y = y*2;
+        vtx[vtx_sz ++].color = c;
+        vtx[vtx_sz].x = x*2; vtx[vtx_sz].y = y*2+1;
+        vtx[vtx_sz ++].color = c;
+        vtx[vtx_sz].x = x*2+1; vtx[vtx_sz].y = y*2+1;
+        vtx[vtx_sz ++].color = c;
+    }
 }
 
 /* Initialization:
@@ -88,7 +92,7 @@ void nes_hal_init()
     al_init();
     al_init_primitives_addon();
     al_install_keyboard();
-    al_create_display(SCREEN_WIDTH, SCREEN_HEIGHT);
+    al_create_display(SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2);
 
     fce_timer = al_create_timer(1.0 / FPS);
     fce_event_queue = al_create_event_queue();
@@ -103,6 +107,11 @@ void nes_flip_display()
     al_draw_prim(vtx, NULL, NULL, 0, vtx_sz, ALLEGRO_PRIM_POINT_LIST);
     al_flip_display();
     vtx_sz = 0;
+    int i;
+    for (i = 0; i < 64; i ++) {
+        pal color = palette[i];
+        color_map[i] = al_map_rgb(color.r, color.g, color.b);
+    }
 }
 
 /* Query a button's state.
