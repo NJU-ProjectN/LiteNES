@@ -1,6 +1,6 @@
-*.[oad]
-*.swp
-*.nes
+.*
 *~
+*.nes
 litenes
-/tags
+/build
+!.gitignore
