@@ -1,5 +1,5 @@
 /*
-This file present all abstraction needed to port LiteNES.
+This file presents all abstractions needed to port LiteNES.
   (The current working implementation uses allegro library.)
 
 To port this project, replace the following functions by your own:

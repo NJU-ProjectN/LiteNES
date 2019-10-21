@@ -14,6 +14,7 @@ Also, the only calls to standard C library are memory movements (e.g., `memcpy` 
 To port LiteNES to other systems, only slight modification of `main.c` and re-implementation of `hal.c` is required.
 
 ### Compilation
+
 To compile LiteNES, you must have *allegro5* library.
 Usually you can install it in the official software repository
 (by `apt-get`, `yum`, `pacman` or `emerge`, depending on your Linux
@@ -25,6 +26,7 @@ Type `make` in the command line to compile. Resolve any error message until
 the `litenes` binary file is created.
 
 ### Game Play
+
 You need to prepare a NES rom first.
 Assume it (`rom.nes`) is located in the same directory as the LiteNES binary.
 Then in this directory, type `./litenes rom.nes` to start the emulator.
