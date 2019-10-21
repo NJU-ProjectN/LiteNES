@@ -153,7 +153,7 @@ void ppu_draw_background_scanline(bool mirror)
                 
                 word attribute_address = (ppu_base_nametable_address() + (mirror ? 0x400 : 0) + 0x3C0 + (tile_x >> 2) + (ppu.scanline >> 5) * 8);
                 bool top = (ppu.scanline % 32) < 16;
-                bool left = (tile_x % 32 < 16);
+                bool left = (tile_x % 4 < 2);
 
                 byte palette_attribute = ppu_ram_read(attribute_address);
 
